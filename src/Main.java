@@ -161,24 +161,14 @@ public class Main {
     }
 
     public static int towerBreakers(int n, int m) {
-
-        int chosenHeight =  m/2, x=1;
-
-        while(chosenHeight % m == 0){
-            chosenHeight = m/x;
-            x++;
-        }
-
-        while (m > 1)
-        {
-            if((m-chosenHeight)==0){
-                return 2;
-            }
-            m=m-chosenHeight;
-        }
-
-    return 1;
+        return (n%2==0 || m==1 )?2:1;
     }
+
+    public static String caesarCipher(String s, int k) {
+        // Write your code here
+    return "";
+    }
+
 
     public static void main(String[] args) throws ParseException {
 
