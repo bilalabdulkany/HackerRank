@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -229,10 +230,22 @@ public class Main {
         return -1;
     }
 
+       private static boolean checkPalindrome(char[] array, int left, int right) {
+        boolean isRight = false;
+        for (int i = left; i < right; i++) {
+            if (array[i] == array[right]) {
+                isRight = true;
+                right--;
+
+            } else {
+                return false;
+            }
+
+        }
+        return isRight;
+    }
     public static String gridChallenge(List<String> grid) {
         List<String> characterList = new ArrayList<>();
-
-
 
         for(int c=0; c<grid.size(); c ++){
             char [] charArray= grid.get(c).toCharArray();
@@ -253,23 +266,6 @@ public class Main {
 
         return "YES";
 
-    }
-
-
-
-    public static boolean checkPalindrome(char[] array, int left, int right) {
-        boolean isRight = false;
-        for (int i = left; i < right; i++) {
-            if (array[i] == array[right]) {
-                isRight = true;
-                right--;
-
-            } else {
-                return false;
-            }
-
-        }
-        return isRight;
     }
 
     public static int palindromeIndex1(String s) {
@@ -319,7 +315,7 @@ public class Main {
         return superD;
     }
 
-    public static int superDigitRec(String number){
+    private static int superDigitRec(String number){
 
         if(number.length() == 1){
             return Integer.parseInt(number);
@@ -333,8 +329,50 @@ public class Main {
         return superDigitRec(String.valueOf(sum));
     }
 
+    public static void minimumBribes(List<Integer> q) {
+        // Write your code here
+
+        List<Integer> originalList = q.stream().sorted().toList();
+        int [] arr = new int[originalList.size()];
+        for(int i= 0; i<q.size(); i++){
+            arr[i] = q.get(i);
+        }
+        System.out.println(Arrays.toString(arr));
+        System.out.println("after");
+        int count= sortNum(arr);
+
+
+        System.out.println(Arrays.toString(arr));
+        System.out.println(count);
+        }
+
+        private static int sortNum(int [] arr){
+            int temp=0, count=0;
+            for(int i=0; i<arr.length-1; i++){
+                if(arr[i]>arr[i+1]){
+                    temp = arr[i+1];
+                    arr[i+1]= arr[i];
+                    arr[i]=temp;
+                    count++;
+                }
+            }
+            if(count!=0){
+                count =+ sortNum(arr);
+            }
+            return count;
+        }
+
+
     public static void main(String[] args) throws IOException {
-        System.out.println(superDigit("3546630947312051453014172159647935984478824945973141333062252613718025688716704470547449723886626736",100000));
+        List<Integer> m = new ArrayList<>();
+        m.add(2);
+        m.add(5);
+        m.add(1);
+        m.add(3);
+        m.add(4);
+
+
+        minimumBribes(m);
 
 
     }
