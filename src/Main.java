@@ -1,3 +1,7 @@
+import java.io.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,12 +11,14 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static java.util.stream.Collectors.toList;
+
 public class Main {
 
 
     public static void miniMaxSum(List<Integer> arr) {
 
-        List<Integer> sortedArray = arr.stream().sorted().collect(Collectors.toList());
+        List<Integer> sortedArray = arr.stream().sorted().collect(toList());
 
         long sum = 0, maxSum = 0, minSum = 0;
         for (int i = 0; i < arr.size(); i++) {
@@ -37,7 +43,7 @@ public class Main {
 
     public static int findMedian(List<Integer> arr) {
         // Write your code here
-        List<Integer> sorted = arr.stream().sorted().collect(Collectors.toList());
+        List<Integer> sorted = arr.stream().sorted().collect(toList());
         int size = sorted.size();
 
         int median = size / 2;
@@ -50,7 +56,7 @@ public class Main {
         // Write your code here
         Map<Integer, Integer> uniqueSet = new HashMap<Integer, Integer>();
 
-        a = a.stream().sorted().collect(Collectors.toList());
+        a = a.stream().sorted().collect(toList());
         int index = 0;
         for (int i = 0; i < a.size(); i++) {
             if (uniqueSet.get(a.get(i)) == null)
@@ -93,7 +99,7 @@ public class Main {
         Arrays.stream(fillArray).forEach(c -> System.out.print(c + " "));
 
 
-        return Arrays.stream(fillArray).boxed().collect(Collectors.toList());
+        return Arrays.stream(fillArray).boxed().collect(toList());
 
     }
 
@@ -167,7 +173,7 @@ public class Main {
     }
 
     public static String caesarCipher(String s, int k) {
-    //fff.jkl.gh
+        //fff.jkl.gh
         char[] charArray = s.toCharArray();
         char singleChar;
         int modChar = 0;
@@ -180,14 +186,13 @@ public class Main {
 
                 singleChar = Character.toLowerCase(charArray[i]);
 
-                k=k%26;
+                k = k % 26;
 
-                System.out.println("k%26: "+ k);
+                System.out.println("k%26: " + k);
                 modChar = singleChar + k;
-                if(modChar>122){
-                    modChar=96+(modChar-122);
+                if (modChar > 122) {
+                    modChar = 96 + (modChar - 122);
                 }
-
 
 
                 singleChar = (char) (modChar);
@@ -203,52 +208,134 @@ public class Main {
         return output.toString();
     }
 
+    public static int palindromeIndex(String s) {
+        char[] charArray = s.toCharArray();
+        int size = charArray.length;//8
+        System.out.println(Arrays.toString(charArray));
+        int left = 0, l = 0, r = 0, right = size - 1;
+        boolean isRight, isLeft;
+        while (left <= right) {
+            if (charArray[left] != charArray[right]) {
+                isLeft = checkPalindrome(charArray, left, right-1);
+                isRight = checkPalindrome(charArray, left+1, right);
 
-    public static void main(String[] args) throws ParseException {
+                if (isLeft) return right;
+                else if (isRight) return left;
+            }
+            left++;
+            right--;
+        }
 
-        List<List<Integer>> sqMatrix = new ArrayList<>();
-        List<Integer> input = new ArrayList<>();
+        return -1;
+    }
 
-        input.add(112);
-        input.add(42);
-        input.add(83);
-        input.add(119);
+    public static String gridChallenge(List<String> grid) {
+        List<String> characterList = new ArrayList<>();
 
-        sqMatrix.add(input);
 
-        List<Integer> input2 = new ArrayList<>();
-        input2.add(56);
-        input2.add(125);
-        input2.add(56);
-        input2.add(49);
-        sqMatrix.add(input2);
 
-        List<Integer> input3 = new ArrayList<>();
+        for(int c=0; c<grid.size(); c ++){
+            char [] charArray= grid.get(c).toCharArray();
+            Arrays.sort(charArray);
+            characterList.add(new String(charArray));
+        }
+        String stringArray = grid.get(0);
+        int size = stringArray.length();
 
-        input3.add(15);
-        input3.add(78);
-        input3.add(101);
-        input3.add(43);
-        sqMatrix.add(input3);
+        for(int c=1; c<grid.size();c++){
+            for(int r=0; r<size; r++){
+                if((characterList.get(c-1).charAt(r)>characterList.get(c).charAt(r))){
 
-        List<Integer> input4 = new ArrayList<>();
+                    return "NO";
+                }
+            }
+        }
 
-        input4.add(62);
-        input4.add(98);
-        input4.add(114);
-        input4.add(108);
-        sqMatrix.add(input4);
+        return "YES";
 
-        int[] a = new int[7];
-        a[0] = 1;
-        a[1] = 2;
-        a[2] = 3;
-        a[3] = 4;
-        a[4] = 5;
-        a[5] = 6;
-        a[6] = 7;
+    }
 
-        System.out.println(caesarCipher("www.abc.xyza123", 87));
+
+
+    public static boolean checkPalindrome(char[] array, int left, int right) {
+        boolean isRight = false;
+        for (int i = left; i < right; i++) {
+            if (array[i] == array[right]) {
+                isRight = true;
+                right--;
+
+            } else {
+                return false;
+            }
+
+        }
+        return isRight;
+    }
+
+    public static int palindromeIndex1(String s) {
+
+        char[] charArray = s.toCharArray();
+        int size = charArray.length;//8
+        System.out.println(Arrays.toString(charArray));
+        int palIndex = -1;
+        for (int i = 0; i < (size + 1) / 2 - 1; i++) {
+            if (charArray[i] != charArray[size - 1 - i]) {
+                //q u yjjdcgsvvsgcdjjy q
+                //hgygsvlf w cw nswwsn w c flvsgygh
+                //hgygsvlf c w nswwsn wc w flvsgygh
+
+                if (charArray[i + 1] == charArray[size - i - 1]) {
+                    if (charArray[i + 2] == charArray[size - i - 2])
+                        palIndex = i;
+                    else
+                        palIndex = size - i - 1;
+
+                }
+                if (charArray[i] == charArray[size - i - 2]) {
+                    if (charArray[i + 2] == charArray[size - i - 3])
+                        palIndex = size - i - 1;
+                    else
+                        palIndex = i;
+                }
+
+                System.out.println(charArray[(i + 1)] + "" + charArray[(i + 2)] + charArray[i + 3] + " first index:" + i + ":" + charArray[i] + " && " + charArray[size - i - 3] + charArray[size - i - 2] + "" + charArray[size - i - 1] + " last index: " + (size - i - 1) + ":" + charArray[size - i - 1]);
+                // System.out.println(charArray[i]+" "+charArray[(i+1)]+""+charArray[(i+2)]+" " +(i)+" && "+charArray[size - i-2]+""+charArray[size - i-1]+ " index: "+i);
+                System.out.println(charArray[palIndex]);
+                return palIndex;
+            }
+        }
+
+        return palIndex;
+
+    }
+    public static int superDigit(String n, int k) {
+        // Write your code here
+        //System.out.println(concatString);
+        int superD=superDigitRec(n)*k;
+        if(superD>9){
+            superD =superDigitRec(String.valueOf(superD));
+        }
+        //System.out.println(superD);
+        return superD;
+    }
+
+    public static int superDigitRec(String number){
+
+        if(number.length() == 1){
+            return Integer.parseInt(number);
+        }
+        int sum=0;
+        for(int i=0; i<number.length(); i++){
+            sum+=Character.getNumericValue(number.charAt(i));
+        }
+
+
+        return superDigitRec(String.valueOf(sum));
+    }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(superDigit("3546630947312051453014172159647935984478824945973141333062252613718025688716704470547449723886626736",100000));
+
 
     }
 }
