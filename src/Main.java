@@ -1,16 +1,9 @@
 import java.io.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicIntegerArray;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
 
@@ -338,12 +331,25 @@ public class Main {
             arr[i] = q.get(i);
         }
         System.out.println(Arrays.toString(arr));
-        System.out.println("after");
-        int count= sortNum(arr);
 
+        int stepsTaken=0,temp=0, numberOfBribes=0;
+        for(int i= 0; i<q.size(); i++){
+            if( (i+1) > arr[i] ){
+                numberOfBribes=Math.abs((arr[i]-1)-(i));
+                System.out.println("number of bribes: for: " +arr[arr[i]-1]+":"+ numberOfBribes);
+                temp = arr[arr[i]-1];
+                arr[arr[i]-1]= arr[i];
+                arr[i]=temp;
+                System.out.println("after--");
+                System.out.println(Arrays.toString(arr));
+                stepsTaken++;
+
+            }
+        }
 
         System.out.println(Arrays.toString(arr));
-        System.out.println(count);
+        System.out.println(stepsTaken);
+
         }
 
         private static int sortNum(int [] arr){
@@ -368,6 +374,7 @@ public class Main {
         m.add(2);
         m.add(5);
         m.add(1);
+
         m.add(3);
         m.add(4);
 
