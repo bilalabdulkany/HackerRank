@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -12,11 +13,11 @@ public class Main {
 
     public static void miniMaxSum(List<Integer> arr) {
 
-        List<Integer> sortedArray = arr.stream().sorted().collect(toList());
+        List<Integer> sortedArray = arr.stream().sorted().toList();
 
-        long sum = 0, maxSum = 0, minSum = 0;
-        for (int i = 0; i < arr.size(); i++) {
-            sum += arr.get(i);
+        long sum = 0, maxSum, minSum;
+        for (Integer integer : arr) {
+            sum += integer;
         }
         minSum = sum - arr.get(arr.size()).longValue();
         maxSum = sum - arr.get(0).longValue();
@@ -31,13 +32,12 @@ public class Main {
         DateFormat format = new SimpleDateFormat("hh:mm:ssaa");
         var inputDate = format.parse(s);
         DateFormat output = new SimpleDateFormat("HH:mm:ss");
-        String date = output.format(inputDate);
-        return date;
+        return output.format(inputDate);
     }
 
     public static int findMedian(List<Integer> arr) {
         // Write your code here
-        List<Integer> sorted = arr.stream().sorted().collect(toList());
+        List<Integer> sorted = arr.stream().sorted().toList();
         int size = sorted.size();
 
         int median = size / 2;
@@ -48,15 +48,14 @@ public class Main {
 
     public static int lonelyinteger(List<Integer> a) {
         // Write your code here
-        Map<Integer, Integer> uniqueSet = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> uniqueSet = new HashMap<>();
 
         a = a.stream().sorted().collect(toList());
-        int index = 0;
-        for (int i = 0; i < a.size(); i++) {
-            if (uniqueSet.get(a.get(i)) == null)
-                uniqueSet.put(a.get(i), 1);
+        for (Integer integer : a) {
+            if (uniqueSet.get(integer) == null)
+                uniqueSet.put(integer, 1);
             else
-                uniqueSet.remove(a.get(i));
+                uniqueSet.remove(integer);
         }
 
         uniqueSet.entrySet().stream().forEach(c -> System.out.println(c));
@@ -170,15 +169,15 @@ public class Main {
         //fff.jkl.gh
         char[] charArray = s.toCharArray();
         char singleChar;
-        int modChar = 0;
-        StringBuffer output = new StringBuffer();
+        int modChar;
+        StringBuilder output = new StringBuilder();
 
 
-        for (int i = 0; i < charArray.length; i++) {
+        for (char c : charArray) {
 
-            if (Character.isAlphabetic(charArray[i])) {
+            if (Character.isAlphabetic(c)) {
 
-                singleChar = Character.toLowerCase(charArray[i]);
+                singleChar = Character.toLowerCase(c);
 
                 k = k % 26;
 
@@ -192,10 +191,10 @@ public class Main {
                 singleChar = (char) (modChar);
 
 
-                singleChar = Character.isUpperCase(charArray[i]) ? Character.toUpperCase(singleChar) : singleChar;
+                singleChar = Character.isUpperCase(c) ? Character.toUpperCase(singleChar) : singleChar;
                 output.append(singleChar);
             } else {
-                output.append(charArray[i]);
+                output.append(c);
             }
         }
 
@@ -210,8 +209,8 @@ public class Main {
         boolean isRight, isLeft;
         while (left <= right) {
             if (charArray[left] != charArray[right]) {
-                isLeft = checkPalindrome(charArray, left, right-1);
-                isRight = checkPalindrome(charArray, left+1, right);
+                isLeft = checkPalindrome(charArray, left, right - 1);
+                isRight = checkPalindrome(charArray, left + 1, right);
 
                 if (isLeft) return right;
                 else if (isRight) return left;
@@ -223,7 +222,7 @@ public class Main {
         return -1;
     }
 
-       private static boolean checkPalindrome(char[] array, int left, int right) {
+    private static boolean checkPalindrome(char[] array, int left, int right) {
         boolean isRight = false;
         for (int i = left; i < right; i++) {
             if (array[i] == array[right]) {
@@ -237,20 +236,21 @@ public class Main {
         }
         return isRight;
     }
+
     public static String gridChallenge(List<String> grid) {
         List<String> characterList = new ArrayList<>();
 
-        for(int c=0; c<grid.size(); c ++){
-            char [] charArray= grid.get(c).toCharArray();
+        for (int c = 0; c < grid.size(); c++) {
+            char[] charArray = grid.get(c).toCharArray();
             Arrays.sort(charArray);
             characterList.add(new String(charArray));
         }
         String stringArray = grid.get(0);
         int size = stringArray.length();
 
-        for(int c=1; c<grid.size();c++){
-            for(int r=0; r<size; r++){
-                if((characterList.get(c-1).charAt(r)>characterList.get(c).charAt(r))){
+        for (int c = 1; c < grid.size(); c++) {
+            for (int r = 0; r < size; r++) {
+                if ((characterList.get(c - 1).charAt(r) > characterList.get(c).charAt(r))) {
 
                     return "NO";
                 }
@@ -297,25 +297,26 @@ public class Main {
         return palIndex;
 
     }
+
     public static int superDigit(String n, int k) {
         // Write your code here
         //System.out.println(concatString);
-        int superD=superDigitRec(n)*k;
-        if(superD>9){
-            superD =superDigitRec(String.valueOf(superD));
+        int superD = superDigitRec(n) * k;
+        if (superD > 9) {
+            superD = superDigitRec(String.valueOf(superD));
         }
         //System.out.println(superD);
         return superD;
     }
 
-    private static int superDigitRec(String number){
+    private static int superDigitRec(String number) {
 
-        if(number.length() == 1){
+        if (number.length() == 1) {
             return Integer.parseInt(number);
         }
-        int sum=0;
-        for(int i=0; i<number.length(); i++){
-            sum+=Character.getNumericValue(number.charAt(i));
+        int sum = 0;
+        for (int i = 0; i < number.length(); i++) {
+            sum += Character.getNumericValue(number.charAt(i));
         }
 
 
@@ -326,61 +327,105 @@ public class Main {
         // Write your code here
 
         List<Integer> originalList = q.stream().sorted().toList();
-        int [] arr = new int[originalList.size()];
-        for(int i= 0; i<q.size(); i++){
+        int[] arr = new int[originalList.size()];
+        for (int i = 0; i < q.size(); i++) {
             arr[i] = q.get(i);
         }
-        System.out.println(Arrays.toString(arr));
+       // System.out.println(Arrays.toString(arr));
 
-        int stepsTaken=0,temp=0, numberOfBribes=0;
-        for(int i= 0; i<q.size(); i++){
-            if( (i+1) > arr[i] ){
-                numberOfBribes=Math.abs((arr[i]-1)-(i));
-                System.out.println("number of bribes: for: " +arr[arr[i]-1]+":"+ numberOfBribes);
-                temp = arr[arr[i]-1];
-                arr[arr[i]-1]= arr[i];
-                arr[i]=temp;
-                System.out.println("after--");
-                System.out.println(Arrays.toString(arr));
-                stepsTaken++;
+        int stepsTaken = 0, numberOfBribes = 0, noSteps=0;
+        String output = null;
+        for (int i = q.size()-1; i >= 0  ; i--) {
 
+            noSteps = arr[i] - (i+1);
+
+            if(noSteps>2){
+                System.out.println("Too chaotic");
+                return;
             }
-        }
-
-        System.out.println(Arrays.toString(arr));
-        System.out.println(stepsTaken);
-
-        }
-
-        private static int sortNum(int [] arr){
-            int temp=0, count=0;
-            for(int i=0; i<arr.length-1; i++){
-                if(arr[i]>arr[i+1]){
-                    temp = arr[i+1];
-                    arr[i+1]= arr[i];
-                    arr[i]=temp;
-                    count++;
+            else {
+                int start = Math.max(0,arr[i]-2);
+                for(int j=start; j<i; j++){
+                    if(arr[j]>arr[i]){
+                        numberOfBribes++;
+                    }
                 }
+
             }
-            if(count!=0){
-                count =+ sortNum(arr);
-            }
-            return count;
         }
+        System.out.println(numberOfBribes);
+    }
+
+    private static int sortNum(int[] arr) {
+        int temp = 0, count = 0;
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i] > arr[i + 1]) {
+                temp = arr[i + 1];
+                arr[i + 1] = arr[i];
+                arr[i] = temp;
+                count++;
+            }
+        }
+        if (count != 0) {
+            count += sortNum(arr);
+        }
+        return count;
+    }
+
+    public static int truckTour(List<List<Integer>> petrolpumps) {
+        // Write your code here
+        int size= petrolpumps.get(0).size();
+
+        for(int i=0; i<size; i++){
+            if(petrolpumps.get(i).get(0)> petrolpumps.get(i).get(1) ){
+
+            }
+
+        }
+        return 0;
+
+    }
 
 
     public static void main(String[] args) throws IOException {
         List<Integer> m = new ArrayList<>();
+
+
+        m.add(1);
         m.add(2);
         m.add(5);
-        m.add(1);
-
         m.add(3);
+        m.add(7);
+        m.add(8);
+        m.add(6);
         m.add(4);
 
 
-        minimumBribes(m);
+        inputminimumBribes();
 
 
     }
+
+    private static void inputminimumBribes () throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        int t = Integer.parseInt(bufferedReader.readLine().trim());
+
+        IntStream.range(0, t).forEach(tItr -> {
+            try {
+                int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+                List<Integer> q = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                        .map(Integer::parseInt)
+                        .collect(toList());
+
+                minimumBribes(q);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        bufferedReader.close();
+    }
+
 }
