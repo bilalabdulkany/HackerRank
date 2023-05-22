@@ -374,16 +374,32 @@ public class Main {
 
     public static int truckTour(List<List<Integer>> petrolpumps) {
         // Write your code here
-        int size= petrolpumps.get(0).size();
+        int start=0,size= petrolpumps.size();
+        int petrolTank=0,distance=petrolpumps.get(0).get(1);
 
-        for(int i=0; i<size; i++){
-            if(petrolpumps.get(i).get(0)> petrolpumps.get(i).get(1) ){
+
+
+            while(distance>=0 && start >=0) {
+                petrolTank += petrolpumps.get(start).get(0);
+                distance = petrolpumps.get(start).get(1);
+
+                System.out.println("Tank: " + petrolTank + ", " + distance);
+                if (petrolTank < distance) {
+                    System.out.println(start + 1 + ": will run out of petrol");
+                    petrolTank = petrolpumps.get(start).get(0);
+                    distance = petrolpumps.get(start).get(1);
+                   // petrolTank -= distance;
+                    start--;}
+                else{
+                    start++;
+                }
+                petrolTank -= distance;
+                start=start%size;
 
             }
 
-        }
-        return 0;
 
+        return 1;
     }
 
 
@@ -401,8 +417,37 @@ public class Main {
         m.add(4);
 
 
-        inputminimumBribes();
+        //inputminimumBribes();
+        petrolPump();
 
+
+    }
+
+    private static void petrolPump() throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+       // BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<List<Integer>> petrolpumps = new ArrayList<>();
+
+        IntStream.range(0, n).forEach(i -> {
+            try {
+                petrolpumps.add(
+                        Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                                .map(Integer::parseInt)
+                                .collect(toList())
+                );
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        int result = truckTour(petrolpumps);
+
+        System.out.println(result);
+
+        bufferedReader.close();
 
     }
 
