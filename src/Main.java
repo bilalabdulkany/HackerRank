@@ -374,32 +374,27 @@ public class Main {
 
     public static int truckTour(List<List<Integer>> petrolpumps) {
         // Write your code here
-        int start=0,size= petrolpumps.size();
+        int start=0,size= petrolpumps.size(), sum=0;
         int petrolTank=0,distance=petrolpumps.get(0).get(1);
 
 
 
-            while(distance>=0 && start >=0) {
-                petrolTank += petrolpumps.get(start).get(0);
-                distance = petrolpumps.get(start).get(1);
+            for(int i=start; i<size; i ++) {
 
-                System.out.println("Tank: " + petrolTank + ", " + distance);
-                if (petrolTank < distance) {
-                    System.out.println(start + 1 + ": will run out of petrol");
-                    petrolTank = petrolpumps.get(start).get(0);
-                    distance = petrolpumps.get(start).get(1);
-                   // petrolTank -= distance;
-                    start--;}
-                else{
-                    start++;
+                petrolTank = petrolpumps.get(i).get(0);
+                sum += petrolTank-petrolpumps.get(i).get(1);
+
+                System.out.println("Tank: " + petrolTank + ", " + distance+ ": sum: "+sum);
+                if (sum < 0) {
+                    sum=0;
+                    start = i+1;
+                    System.out.println("starting again from: "+start);
                 }
-                petrolTank -= distance;
-                start=start%size;
 
             }
 
 
-        return 1;
+        return start;
     }
 
 
