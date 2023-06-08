@@ -669,16 +669,120 @@ public class Main {
            return false;
         }
 
+    public static int pairs(int k, List<Integer> arr) {
+        int count=0;
+        HashSet hashSet = new HashSet<>(arr);
+
+        for(int i=0; i< arr.size(); i++){
+            if(hashSet.contains(arr.get(i)+k))
+                count++;
+        }
+
+        return count;
+    }
 
 
-    public static void main(String[] args) throws IOException {
-        //  [({})]
-        //  {(([])[])[]}
-        //  {(([])[])[]}[]
-        //  {(([])[])[]}}
 
-        String res = isBalanced("{[(])}");
-        System.out.println(res);
+    public static void Pairsmain(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        int n = Integer.parseInt(firstMultipleInput[0]);
+
+        int k = Integer.parseInt(firstMultipleInput[1]);
+
+        List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                .map(Integer::parseInt)
+                .collect(toList());
+
+        int result = pairs(k, arr);
+
+        System.out.println(result);
+        bufferedReader.close();
+
+    }
+
+    static class Operation {
+        int type;
+        Object argument;
+
+        Operation(int type, Object argument) {
+            this.type = type;
+            this.argument = argument;
+        }
+    }
+    static class Operation {
+        int type;
+        Object argument;
+
+        Operation(int type, Object argument) {
+            this.type = type;
+            this.argument = argument;
+        }
+    }
+    private static void doStringOperation(List<String> result){
+        String[] k=null;int first,index,size;
+        StringBuilder builder = new StringBuilder();
+        Stack<Operation> operations = new Stack<Operation>();
+
+        for(int i=0; i<result.size(); i++){
+            size = builder.length();
+            k = result.get(i).split(" ");
+            first = Integer.parseInt(k[0]);
+
+            switch (first){
+                case 1: builder.append(k[1]);
+
+                    operations.push(new Operation(first, k[1].length()));
+                    break;
+                case 2: {
+                    index = Integer.parseInt(k[1]);
+                    String last = builder.substring(size - index);
+                    operations.push(new Operation(first, last));
+
+                    builder.delete(size-index,size);
+
+                    break;
+                }
+                case 3:
+                    System.out.println(builder.charAt(Integer.parseInt(k[1])-1));
+                    break;
+                case 4:
+                    Operation operation = operations.pop();
+
+                    if (operation.type == 1) {
+                        builder.delete(size - (int) operation.argument, size);
+                    } else {
+                        builder.append(operation.argument);
+                    }
+
+
+                default:
+            }
+
+        }
+    }
+
+
+    public static void main(String []args) throws IOException {
+
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        int t = Integer.parseInt(bufferedReader.readLine().trim());
+        List<String> result = new ArrayList<>();
+        for(int i=0;i < t; i++){
+            try {
+                result.add(bufferedReader.readLine());
+
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        doStringOperation(result);
+
+        bufferedReader.close();
     }
 
 }
