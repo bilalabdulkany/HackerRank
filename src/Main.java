@@ -3,6 +3,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -492,9 +493,38 @@ public class Main {
         return  head3;
     }
 
-    public static void main(String[] args) throws IOException {
-        mergeList();
+    public static void queueQuestion() throws IOException {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        int q = Integer.parseInt(bufferedReader.readLine().trim());
+        Queue queue = new LinkedList();
+        IntStream.range(0, q).forEach(tItr -> {
+            try {
+                String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+                int type = Integer.parseInt(firstMultipleInput[0]);
+
+
+                if(type==1){
+                    int value = Integer.parseInt(firstMultipleInput[1]);
+                    queue.offer(value);
+                }else if(type == 2)
+                    queue.poll();
+                else {
+                    System.out.println("element: "+ queue.peek());
+                    //System.out.println("poll: " +queue.poll());
+                    //System.out.println("peek: " +queue.peek());
+                }
+                System.out.println("action: " + type+" :"+queue.toString());
+
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
     }
+
+
 
     private static void petrolPump() throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -586,6 +616,69 @@ public class Main {
         }
 
         scanner.close();
+    }
+
+    public static String isBalanced(String s) {
+
+        List<Character> charList = s.chars().mapToObj(e->(char)e).collect(toList());
+
+        LinkedList<Character> queue = new LinkedList<>();
+        for(char e : charList){
+
+            if(queue.size()!=0&&isEndBracket(e)){
+                if(getStartingBracket(e)!=queue.peekLast()){
+
+                    return "NO";
+                }else {
+                    queue.pollLast();
+                }
+
+            }else{
+                queue.offer(e);
+            }
+
+        }
+
+       // System.out.println(queue);
+    if(queue.size()!=0) return "NO";
+        return  "YES";
+    }
+
+
+    private static Character getStartingBracket(char bracket) {
+        switch (bracket) {
+            case ']':
+                return '[';
+            case '}':
+                return '{';
+            case ')':
+                return '(';
+            default:
+                return '1';
+        }
+    }
+
+        private static Boolean isEndBracket(char bracket){
+            List<Character> endBrackets = new ArrayList<Character>();
+            endBrackets.add(')');
+            endBrackets.add('}');
+            endBrackets.add(']');
+           if(endBrackets.contains(bracket)){
+               return true;
+           }
+           return false;
+        }
+
+
+
+    public static void main(String[] args) throws IOException {
+        //  [({})]
+        //  {(([])[])[]}
+        //  {(([])[])[]}[]
+        //  {(([])[])[]}}
+
+        String res = isBalanced("{[(])}");
+        System.out.println(res);
     }
 
 }
