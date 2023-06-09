@@ -712,15 +712,6 @@ public class Main {
             this.argument = argument;
         }
     }
-    static class Operation {
-        int type;
-        Object argument;
-
-        Operation(int type, Object argument) {
-            this.type = type;
-            this.argument = argument;
-        }
-    }
     private static void doStringOperation(List<String> result){
         String[] k=null;int first,index,size;
         StringBuilder builder = new StringBuilder();
@@ -764,6 +755,50 @@ public class Main {
         }
     }
 
+    static Stack<Operation> operations = new Stack<Operation>();
+    static StringBuilder builder = new StringBuilder();
+    private static void doStringOperation1(String result){
+        String[] k=null;int first,index,size;
+
+
+
+            size = builder.length();
+            k = result.split(" ");
+            first = Integer.parseInt(k[0]);
+
+            switch (first){
+                case 1: builder.append(k[1]);
+
+                    operations.push(new Operation(first, k[1].length()));
+                    break;
+                case 2: {
+                    index = Integer.parseInt(k[1]);
+                    String last = builder.substring(size - index);
+                    operations.push(new Operation(first, last));
+
+                    builder.delete(size-index,size);
+
+                    break;
+                }
+                case 3:
+                    System.out.println(builder.charAt(Integer.parseInt(k[1])-1));
+                    break;
+                case 4:
+                    Operation operation = operations.pop();
+
+                    if (operation.type == 1) {
+                        builder.delete(size - (int) operation.argument, size);
+                    } else {
+                        builder.append(operation.argument);
+                    }
+
+
+                default:
+            }
+
+
+    }
+
 
     public static void main(String []args) throws IOException {
 
@@ -773,14 +808,14 @@ public class Main {
         List<String> result = new ArrayList<>();
         for(int i=0;i < t; i++){
             try {
-                result.add(bufferedReader.readLine());
+                doStringOperation1(bufferedReader.readLine());
 
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
 
-        doStringOperation(result);
+       // doStringOperation(result);
 
         bufferedReader.close();
     }
